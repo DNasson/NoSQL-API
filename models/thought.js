@@ -1,18 +1,37 @@
-thoughtText
-    string 
-    required
-    must be between 1 and 280 characters
+const { Schema, model } = require('mongoose');
+const dateFormat = require('../utils/dateFormat');
+const reactionSchema = require('./reaction');
 
-createdAt
-    Date
-    default value of the current timestamp
-    getter method to format the timestamp on query
+const thoughtSchema = new Schema(
+    {
+        thoughtText: {
+            type: String,
+            required: true,
+            minLength: 1,
+            maxLength: 280
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now,
+            get: (createdAtVal) => dateFormat(createdAtVal)
+        },
+        username: {
+            type: String,
+            required: true
+        },
+        reactions: [reactionSchema]
+    },
+    {
+        toJSON: {
+            getters: true
+        }
+    }
+);
 
-username
-    string
-    required
+thoughtSchema.virtual('reactionCount').get(function () {
+    return this.reactions.length;
+});
 
-reactions (These are like replies)
-    array of nested documents created with the reactionSchema
+const Thought = model('Thought', thoughtSchema);
 
-create virtual called reactionCount that retrieves the length of the thought's reactions array field on query
+module.exports = Thought;

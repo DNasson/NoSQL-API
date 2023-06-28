@@ -1,20 +1,32 @@
-reactionId
-use mongoose's objectId data type
-default value is set to a new objectId
+const { Schema, Types } = require('mongoose');
+const dateFormat = require('../utils/dateFormat');
 
-reactionBody
-string
-required
-280 character maximum
+const reactionSchema = new Schema(
+    {
+        reactionId: {
+            type: Schema.Types.ObjectId,
+            default: () => new Types.ObjectId()
+        },
+        reactionBody: {
+            type: String,
+            required: true,
+            maxLength: 280
+        },
+        username: {
+            type: String,
+            required: true
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now,
+            get: createdAtVal => dateFormat(createdAtVal)
+        }
+    },
+    {
+        toJSON: {
+            getters: true
+        }
+    }
+);
 
-username
-string
-required
-
-createdAt
-Date
-default value of the current timestamp
-getter method to format the timestamp on query
-
-schema settings
-used as reaction field's subdocument schema in the Thought model
+module.exports = reactionSchema;

@@ -1,23 +1,47 @@
+const { Schema, model } = require('mongoose');
 
+const userSchema = new Schema(
+    {
+        username: {
+            type: String,
+            unique: true,
+            required: 'Username is Required',
+            trim: true
+        },
 
-username
-    string
-    unique
-    required
-    trimmed
+        email: {
+            type: String,
+            required: 'Email is Required',
+            unique: true,
+            match: [/.+@.+\..+/, 'Please enter a valid e-mail address']
+        },
 
-email 
-    string
-    required
-    unique
-    must match a valid email address
+        thoughts: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Thought'
+            }
+        ],
 
-thoughts
-    array of _id values referencing the Thought model
+        friends: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'User'
+            }
+        ]
+    },
+    {
+        toJSON: {
+            virtuals: true,
+            getters: true
+        },
+        id: false
+    }
+);
 
-friends
-    array of _id values referencing the User model (self-reference)
+userSchema.virtual('friendCount').get(function () {
+    return this.friends.length;
+});
+const User = model('User', userSchema);
 
-
-schema settings friendCount that retrieves the length of the user's friends array field on query
-
+module.exports = User;
