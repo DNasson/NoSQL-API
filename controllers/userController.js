@@ -18,16 +18,13 @@ module.exports = {
   // get one user by id
   async getUserById({ params }, res) {
     try {
-      const user = await User.findOne({ _id: params.id }).select("-__v");
+      const user = await User.findOne({ userId: params.id }).select("-__v");
 
       if (!user) {
         return res.status(404).json({ message: "No user with that ID" });
       }
 
-      res.json({
-        user,
-        grade: await grade(req.params.userId),
-      });
+      res.json(user);
     } catch (err) {
       console.log(err);
       return res.status(500).json(err);
@@ -45,7 +42,7 @@ module.exports = {
   // update user by id
   async updateUser({ params, body }, res) {
     try {
-      const user = await User.findOneAndUpdate({ _id: params.id }, body, {
+      const user = await User.findOneAndUpdate({ userId: params.id }, body, {
         new: true,
       });
       if (!user) {
@@ -61,7 +58,7 @@ module.exports = {
   // delete user
   async deleteUser({ params }, res) {
     try {
-      const user = await User.findOneAndDelete({ _id: params.id });
+      const user = await User.findOneAndDelete({ userId: params.id });
 
       if (!user) {
         return res.status(404).json({ message: "No user with that ID" });
@@ -83,7 +80,7 @@ module.exports = {
   },
   async addFriend({ params }, res) {
     console.log("You are adding a friend");
-    console.log(req.body);
+    // console.log(req.body);
 
     try {
       const user = await User.findOneAndUpdate(
