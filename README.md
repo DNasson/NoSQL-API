@@ -23,7 +23,7 @@ I learned quite a bit about routes and controllers. I learned how they fit toget
 
 ## Installation
 
-Access the project in the public github repository. Click the green code button and copy the SSH code. Open your terminal or bash account and 'git clone' the code that was copied from the site. Run "npm i" then "node index.js" and it should say that "API server running on port 3001!"
+Access the project in the public github repository. Click the green code button and copy the SSH code. Open your terminal or bash account and 'git clone' the code that was copied from the site. Open VS Code and open an integrated terminal in the 'NoSQL-API' project. Run "npm i" then "node index.js" and it should say that "API server running on port 3001!"
 
 ## Usage
 
