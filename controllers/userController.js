@@ -80,12 +80,12 @@ module.exports = {
   },
   async addFriend({ params }, res) {
     console.log("You are adding a friend");
-    // console.log(req.body);
+    console.log(params.friendId);
 
     try {
       const user = await User.findOneAndUpdate(
-        { _id: params.id },
-        { $push: { friends: params.friendId } },
+        { _id: params.userId },
+        { $addToSet: { friends: params.friendId } },
         { new: true }
       );
       if (!user) {
@@ -100,7 +100,7 @@ module.exports = {
   async removeFriend({ params }, res) {
     try {
       const user = await User.findOneAndUpdate(
-        { _id: params.id },
+        { _id: params.userId },
         { $pull: { friends: params.friendId } },
         { new: true }
       );
