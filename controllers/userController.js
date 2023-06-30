@@ -18,7 +18,7 @@ module.exports = {
   // get one user by id
   async getUserById({ params }, res) {
     try {
-      const user = await User.findOne({ userId: params.id }).select("-__v");
+      const user = await User.findOne({ _id: params.userId }).select("-__v");
 
       if (!user) {
         return res.status(404).json({ message: "No user with that ID" });
@@ -42,7 +42,7 @@ module.exports = {
   // update user by id
   async updateUser({ params, body }, res) {
     try {
-      const user = await User.findOneAndUpdate({ userId: params.id }, body, {
+      const user = await User.findOneAndUpdate({ userId: params.userId }, body, {
         new: true,
       });
       if (!user) {
@@ -65,8 +65,8 @@ module.exports = {
       }
 
       const friend = await User.findOneAndUpdate(
-        { friends: params.id },
-        { $pull: { friends: params.id } },
+        { friends: params.userId },
+        { $pull: { friends: params.friendId } },
         { new: true }
       );
 

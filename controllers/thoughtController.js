@@ -80,7 +80,7 @@ module.exports = {
         return res.status(404).json({ message: "No such thought exists" });
       }
 
-      const reaction = await Reaction.findOneAndUpdate(
+      const reaction = await Thought.findOneAndUpdate(
         { thoughts: req.params.thoughtId },
         { $pull: { thoughts: req.params.thoughtId } },
         { new: true }
